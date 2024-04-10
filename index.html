@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0" />
+        <meta http-equiv="refresh" content="60" />
+
+        <title>Parlamentarni izbori 2024</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+        <!--
+            Original 'style.css'
+            first passed through the prefixer: https://autoprefixer.github.io/
+            and after that through the minifier: https://www.toptal.com/developers/cssminifier
+        -->
+        <link rel="stylesheet" href="./static/style.min.css" />
+    </head>
+    <body class="cro_elections">
+        <div class="info_wrapper scrollable_wrapper">
+            <div class="general_info">
+                <h1>
+                    <span class="year">2024.</span>
+                    <span class="text">
+                        <span>PARLAMENTARNI</span>
+                        <span>IZBORI</span>
+                    </span>
+                </h1>
+                <div id="processed_votes_and_last_change"></div>
+            </div>
+            <div class="details scrollable_wrapper">
+                <div id="election_results"></div>
+            </div>
+        </div>
+        <div class="menu_division_wrapper">
+            <div class="menu">
+                <div class="dropdown closed">
+                    <h2 class="icon"><span id="target_unit">Sve jedinice</span>
+                        <span>
+                            <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 1L6.70711 5.29289C6.31658 5.68342 5.68342 5.68342 5.29289 5.29289L1 1" stroke="#6B8FD5" stroke-width="2" />
+                            </svg>
+                        </span>
+                    </h2>
+                    <div class="menu_items_holder scrollable_wrapper">
+                        <ul class="menu_items">
+                            <li data-unit="0">Sve jedinice</li>
+                            <li data-unit="001">I. jedinica</li>
+                            <li data-unit="002">II. jedinica</li>
+                            <li data-unit="003">III. jedinica</li>
+                            <li data-unit="004">IV. jedinica</li>
+                            <li data-unit="005">V. jedinica</li>
+                            <li data-unit="006">VI. jedinica</li>
+                            <li data-unit="007">VII. jedinica</li>
+                            <li data-unit="008">VIII. jedinica</li>
+                            <li data-unit="009">IX. jedinica</li>
+                            <li data-unit="010">X. jedinica</li>
+                            <li data-unit="011">XI. jedinica</li>
+                            <li data-unit="012">XII. jedinica</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="division">PODJELA MANDATA</div>
+        <div class="live_blob">
+            <div class="live">
+                <div class="blob"></div>
+                <div>REZULTATI UŽIVO</div>
+            </div>
+            <p class="api">PODATKE OSIGURAVA: APIS IT D.O.O.</p>
+        </div>
+        <div class="loader_wrapper">
+            <span class="loader"></span>
+        </div>
+        <p class="mobile api">PODATKE OSIGURAVA: APIS IT D.O.O.</p>
+
+        <!--
+            Original 'main.js'
+            passed through the minifier: https://minify-js.com/
+            with options included: 'keep_classnames', 'keep_fnames', 'ie8', and 'safari10'
+        -->
+        <script src="./static/main.min.js"></script>
+    </body>
+
+    <template id="processed_votes_and_last_change_template">
+        <p id="processed_votes"> GLASOVA OBRAĐENO</p>
+        <p id="last_change">POSLJEDNJA IZMJENA: </p>
+    </template>
+</html>
