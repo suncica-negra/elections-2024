@@ -487,13 +487,11 @@ ol {
     }
 
     .info_wrapper {
-        grid-gap: 0;
-    }
-
-    .info_wrapper {
-        grid-template-columns: 300px auto;
         padding: var(--sixteen) var(--twentyFour);
         overflow: hidden;
+        grid-gap: 0;
+        grid-template-columns: unset;
+        height: 252px;
     }
 
     .menu_division_wrapper {
@@ -508,7 +506,7 @@ ol {
     }
 
     .details {
-        margin: -50px 0 0 231px;
+        margin: -36px 0 0 231px;
         max-height: 173px;
         overflow: unset;
     }
@@ -519,6 +517,12 @@ ol {
 
     .details div.tooltip {
         text-align: start;
+        height: 176px;
+    }
+
+    .tooltip ol {
+        height: 127px;
+        overflow-x: overlay;
     }
 
     #election_results {
@@ -537,10 +541,6 @@ ol {
     .graph {
         height: 0;
         width: auto;
-    }
-
-    .info_wrapper {
-        grid-template-columns: unset;
     }
 
     #election_results {
