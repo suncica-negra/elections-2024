@@ -614,4 +614,9 @@ ol {
         display: block;
         left: 206px;
     }
+
+    .party {
+        margin-right: 0;
+        width: auto;
+    }
 }
