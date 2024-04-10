@@ -466,7 +466,7 @@ ol {
     border-right: 4px solid transparent;
     animation: rotation 1s linear infinite;
     position: absolute;
-    top: var(--fiftyPercent);
+    top: 40%;
     right: var(--fiftyPercent);
 }
 
