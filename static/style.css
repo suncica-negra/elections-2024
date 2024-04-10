@@ -256,19 +256,15 @@ h1 .text span:nth-child(2) {
     right: var(--twenty);
 }
 
-.menu_division_wrapper:hover + .division {
-    z-index: -1;
-}
-
 .division {
     font-size: 15px;
     font-weight: var(--boldFont);
     line-height: 18px;
-    top: 83px;
+    top: 77px;
     position: absolute;
     text-wrap: nowrap;
     right: var(--twenty);
-    backdrop-filter: blur(1px);
+    z-index: -1;
 }
 
 #processed_votes_and_last_change {
@@ -468,7 +464,7 @@ ol {
     animation: rotation 1s linear infinite;
     position: absolute;
     top: 40%;
-    right: var(--fiftyPercent);
+    right: 47.5%;
 }
 
 .loader::after {
