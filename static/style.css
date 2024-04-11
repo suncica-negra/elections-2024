@@ -75,7 +75,8 @@ textarea:not([rows]) {
 :root {
     --white: #E1E1E1;
     --whiteDefault: #FFFFFF;
-    --transition: all .5s ease-in-out;
+    --transition5s: all .5s ease-in-out;
+    --transition3s: all .3s ease-in-out;
     --sixteen: 16px;
     --twenty: 20px;
     --ten: 10px;
@@ -165,7 +166,7 @@ span {
 
 svg,
 svg.open {
-    transition: var(--transition);
+    transition: var(--transition5s);
 }
 
 svg.open {
@@ -320,7 +321,7 @@ h1 .text span:nth-child(2) {
 
 .party_result_wrapper:hover .tooltip_wrapper {
     visibility: visible;
-    animation: fadeInFromNone 0.4s ease-in-out;
+    animation: fadeInFromNone .4s ease-in-out;
 }
 
 .party_result_wrapper:hover .party {
@@ -338,7 +339,7 @@ ol {
 .graph {
     height: 60px;
     width: 0;
-    transition: var(--transition);
+    transition: var(--transition5s);
 }
 
 .tooltip_wrapper + p {
@@ -404,7 +405,7 @@ ol {
     border: solid 1px #D9D9D9;
     filter: drop-shadow(0px 3px 4px rgba(0, 36, 127, 0.13));
     height: 165px;
-    transition: height 0.3s ease-in-out;
+    transition: height .3s ease-in-out;
 }
 
 .dropdown.closed .menu_items_holder {
@@ -413,7 +414,7 @@ ol {
 }
 
 .dropdown {
-    transition: all 0.2s ease-in-out;
+    transition: var(--transition3s);
     width: 130px;
     cursor: pointer;
 }
@@ -430,6 +431,7 @@ ol {
 
 .menu_items_holder li:hover {
     background-color: #D2DEF3;
+    transition: var(--transition3s);
 }
 
 .menu_items_holder {
