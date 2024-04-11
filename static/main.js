@@ -1,6 +1,6 @@
 const dropdown = document.querySelector('.dropdown');
 const loaderWrapper = document.querySelector('.loader_wrapper');
-const isMob = window.innerWidth < 950;
+const isMob = window.innerWidth < 900;
 let electionResults = {};
 
 function getRandomColor() {
@@ -208,7 +208,7 @@ function debounce (fn, delay) {
 }
 
 window.addEventListener('resize', debounce(() => {
-    if ((window.innerWidth < 950) !== isMob) {
+    if ((window.innerWidth < 900) !== isMob) {
         window.location.reload();
     }
 }, 200));
