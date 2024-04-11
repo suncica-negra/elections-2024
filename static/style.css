@@ -248,6 +248,7 @@ h1 .text span:nth-child(2) {
     font-size: 14px;
     line-height: 15px;
     width: 66px;
+    min-width: 66px;
     margin-right: 5px;
 }
 
@@ -333,7 +334,12 @@ h1 .text span:nth-child(2) {
 }
 
 ol {
-    padding-left: var(--thirteen);
+    padding-left: 15px;
+}
+
+.graph_wrapper {
+    display: flex;
+    flex-grow: 1;
 }
 
 .graph {
@@ -342,7 +348,7 @@ ol {
     transition: var(--transition5s);
 }
 
-.tooltip_wrapper + p {
+.graph + p {
     margin-left: var(--ten);
 }
 
@@ -508,6 +514,7 @@ ol {
         margin: -36px 0 0 231px;
         max-height: 173px;
         overflow: unset;
+        padding-top: 0;
     }
 
     .details div:nth-child(1) {
@@ -524,10 +531,6 @@ ol {
         overflow-x: overlay;
     }
 
-    #election_results {
-        flex: 1;
-    }
-
     #election_results > div {
         flex: 1 1 0px;
         width: 0;
@@ -535,6 +538,11 @@ ol {
         padding: 0 2px;
         text-align-last: start;
         align-content: end;
+        flex-direction: column-reverse;
+    }
+
+    .graph_wrapper {
+        flex-direction: column-reverse;
     }
 
     .graph {
@@ -548,15 +556,15 @@ ol {
         gap: 2%;
     }
 
-    #election_results > div {
-        flex-direction: column-reverse;
-    }
-
     .party {
         -webkit-line-clamp: 2;
         margin-top: 6px;
         text-align: start;
+        margin-right: 0;
+        width: auto;
+        min-width: unset;
         height: 28px;
+        min-height: 28px;
     }
 
     .division {
@@ -571,7 +579,7 @@ ol {
         left: 14px;
     }
 
-    .tooltip_wrapper + p {
+    .graph + p {
         margin-left: 0;
     }
 
@@ -579,7 +587,7 @@ ol {
         overflow: hidden;
         z-index: 1;
         right: unset;
-        top: -22px;
+        top: -2px;
         left: 88%;
     }
 
@@ -612,10 +620,5 @@ ol {
     .display_before_safari::before {
         display: block;
         left: 206px;
-    }
-
-    .party {
-        margin-right: 0;
-        width: auto;
     }
 }
