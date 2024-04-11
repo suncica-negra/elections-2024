@@ -478,7 +478,7 @@ ol {
     animation: rotation 0.5s linear infinite reverse;
 }
 
-@media screen and (min-width: 950px) {
+@media screen and (min-width: 900px) {
     .mobile {
         display: none;
     }
