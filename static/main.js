@@ -44,10 +44,13 @@ function placeDataInHtml(responseData, rh = true, manjine = false) {
     document.getElementById('election_results').replaceChildren();
     const tooltipHeader = 'Lista stranaka unutar koalicije:';
     const dataToProcess = rh ? responseData.ukupnoMandati : responseData;
+    let maxMandates = 151;
 
     const fragment = new DocumentFragment();
 
-    dataToProcess.forEach(e => {
+    dataToProcess.forEach((e, i) => {
+        if (i === 0) maxMandates = e.brMandata;
+
         const wrapperDiv = document.createElement('div');
         wrapperDiv.setAttribute('class', 'party_result_wrapper');
 
@@ -67,15 +70,24 @@ function placeDataInHtml(responseData, rh = true, manjine = false) {
         const graphicalRepresentation = document.createElement('div');
         setTimeout(() => {
             if (isMob) {
-                graphicalRepresentation.style.width = `${(e.brMandata/151)*100}%`;
+                graphicalRepresentation.style.width = `${(e.brMandata/maxMandates)*100}%`;
             } else {
-                graphicalRepresentation.style.height = `${(e.brMandata/151)*100}%`;
+                graphicalRepresentation.style.height = `${(e.brMandata/maxMandates)*100}%`;
             }
         }, 150);
         // ToDo: boja stranke!!
         graphicalRepresentation.style.backgroundColor = e.color ? e.color : getRandomColor();
         graphicalRepresentation.setAttribute('class', 'graph');
-        wrapperDiv.appendChild(graphicalRepresentation);
+
+        const graphWrapper = document.createElement('div');
+        graphWrapper.setAttribute('class', 'graph_wrapper');
+        graphWrapper.appendChild(graphicalRepresentation);
+
+        const mandateElement = document.createElement('p');
+        mandateElement.textContent = e.brMandata;
+        graphWrapper.appendChild(mandateElement);
+
+        wrapperDiv.appendChild(graphWrapper);
         // graph end
 
         // tooltip start
@@ -97,10 +109,6 @@ function placeDataInHtml(responseData, rh = true, manjine = false) {
         divTag.appendChild(tooltipOlElement);
         wrapperDiv.appendChild(divTooltipWrapper);
         // tooltip end
-
-        const mandateElement = document.createElement('p');
-        mandateElement.textContent = e.brMandata;
-        wrapperDiv.appendChild(mandateElement);
 
         fragment.appendChild(wrapperDiv);
     });
