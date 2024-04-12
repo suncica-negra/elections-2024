@@ -48,6 +48,12 @@ function fixTooltipPosition() {
     });
 }
 
+function percentToPixel(percent) {
+    let min = 39, max = 143;
+
+    return ((percent / 100) * (max - min)) + min;
+}
+
 function placeDataInHtml(responseData, rh = true) {
     document.getElementById('election_results').replaceChildren();
 
@@ -68,13 +74,20 @@ function placeDataInHtml(responseData, rh = true) {
         party.setAttribute('class', 'party');
         wrapperDiv.appendChild(party);
 
+        const mandateElement = document.createElement('p');
+        mandateElement.textContent = e.brMandata;
+
         // graph start
         const graphicalRepresentation = document.createElement('div');
+        const percent = (e.brMandata/maxMandates)*100;
+        const howManyPixels = percentToPixel(percent);
+
         setTimeout(() => {
             if (isMob) {
-                graphicalRepresentation.style.width = `${(e.brMandata/maxMandates)*100}%`;
+                graphicalRepresentation.style.width = `${percent}%`;
             } else {
-                graphicalRepresentation.style.height = `${(e.brMandata/maxMandates)*100}%`;
+                graphicalRepresentation.style.height = `${percent}%`;
+                mandateElement.style.bottom = `${howManyPixels}px`;
             }
         }, 150);
 
@@ -91,12 +104,10 @@ function placeDataInHtml(responseData, rh = true) {
         const graphWrapper = document.createElement('div');
         graphWrapper.setAttribute('class', 'graph_wrapper');
         graphWrapper.appendChild(graphicalRepresentation);
-
-        const mandateElement = document.createElement('p');
-        mandateElement.textContent = e.brMandata;
-        graphWrapper.appendChild(mandateElement);
+        if (isMob) graphWrapper.appendChild(mandateElement);
 
         wrapperDiv.appendChild(graphWrapper);
+        if (!isMob) wrapperDiv.appendChild(mandateElement);
         // graph end
 
         // tooltip start
