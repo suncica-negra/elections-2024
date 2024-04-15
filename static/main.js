@@ -226,6 +226,7 @@ async function getElectionsData(refresh = false) {
     })
     .then((responseJson) => {
         electionResults = responseJson;
+        console.log("🚀 ~ .then ~ electionResults:", electionResults)
 
         if (refresh) {
             const menuItems = document.querySelectorAll('.menu_items li');
@@ -246,7 +247,11 @@ async function getElectionsData(refresh = false) {
 
         setLiveOrNot(responseJson.live);
         processData(responseJson);
-        setInterval(autoRefresh, 60000);
+
+        if (responseJson.live) {
+            const interval = responseJson.interval || 60000;
+            setInterval(autoRefresh, interval);
+        }
     })
     .catch((error) => {
         console.log(`Election results data were not retrieved due to: \n${error}`);
