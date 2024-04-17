@@ -3,7 +3,15 @@ let dropdown = null;
 let loaderWrapper = null;
 let targetUnit = null;
 let selectedUnit = null;
-let electionResults = {};
+let localStorageSelectedUnit = null;
+let electionResults = null;
+const trustDomains = [
+    'https://dw.vecernji.hr',
+    'https://www.vecernji.hr',
+    'https://synth.24sata.rocks',
+    'https://www.24sata.hr',
+    'http://127.0.0.1:8000'
+];
 
 function getRandomColor() {
     let letters = '0123456789ABCDEF';
@@ -57,14 +65,22 @@ function percentToPixel(percent) {
 function placeDataInHtml(responseData, rh = true) {
     document.getElementById('election_results').replaceChildren();
 
-    const tooltipHeader = 'Lista stranaka unutar koalicije:';
+    let tooltipHeader = 'Lista stranaka unutar koalicije:';
     const dataToProcess = rh ? responseData.ukupnoMandatiGrupirano : responseData;
     let maxMandates = 151;
+    const allMandates = [];
+
+    dataToProcess?.forEach(m => {
+        allMandates.push(m.brMandata);
+    });
+
+    maxMandates = Math.max(...allMandates);
 
     const fragment = new DocumentFragment();
 
-    dataToProcess?.forEach((e, i) => {
-        if (i === 0) maxMandates = e.brMandata;
+    dataToProcess?.forEach(e => {
+        const isOstali = e.naziv.toLowerCase().includes('ostal');
+        if (isOstali) tooltipHeader = 'Ostale stranke s mandatima';
 
         const wrapperDiv = document.createElement('div');
         wrapperDiv.setAttribute('class', 'party_result_wrapper');
@@ -120,14 +136,14 @@ function placeDataInHtml(responseData, rh = true) {
         divTag.appendChild(tooltipP);
         divTooltipWrapper.appendChild(divTag);
 
-        const tooltipOlElement = document.createElement('ol');
+        const tooltipOlElement = document.createElement('ul');
         let dataForProcess = e.political_parties;
 
-        if (!rh) dataForProcess = e.naziv.split(', ');
+        if (!rh) dataForProcess = e.stranke;
 
         dataForProcess?.forEach(s => {
             const liTag = document.createElement('li');
-            liTag.textContent = s.naziv || s;
+            liTag.innerHTML = s.naziv || s;
             tooltipOlElement.appendChild(liTag);
         });
 
@@ -183,6 +199,16 @@ function decideHowToProcess(unit) {
     if (unit === '0') processData(electionResults, true);
     else setUnitData(unit);
 }
+
+function setSelectedUnitInMenu(value) {
+    if (targetUnit) {
+        targetUnit.textContent = value;
+
+        trustDomains.forEach(domain => {
+            window.parent.postMessage(value, domain);
+        });
+    }
+}
  
 window.addEventListener('pointerup', (e) => {
     const svg = document.querySelector('svg');
@@ -194,13 +220,21 @@ window.addEventListener('pointerup', (e) => {
         } else {
             dropdown.classList.add('closed');
             svg?.classList.remove('open');
-            const unit = e.target.dataset.unit;
+            const target = e.target;
+            const unit = target ? target.dataset.unit : null;
 
             if (!unit) return;
 
             if (loaderWrapper) loaderWrapper.style.display = 'block';
 
-            if (targetUnit) targetUnit.textContent = e.target?.textContent;
+            if (target) {
+                setSelectedUnitInMenu(target.textContent);
+
+                target.parentNode.querySelectorAll('li').forEach(li => {
+                    li.classList.remove('selected');
+                });
+                target.classList.add('selected');
+            }
 
             decideHowToProcess(unit);
         }
@@ -216,8 +250,19 @@ function autoRefresh() {
     getElectionsData(true);
 }
 
+function handleRefresh() {
+    setProcessedVotesAndLastChange(electionResults.status);
+    setLiveOrNot(electionResults.live);
+
+    const menuItems = document.querySelectorAll('.menu_items li');
+
+    menuItems.forEach(item => {
+        if (item.textContent === targetUnit.textContent) decideHowToProcess(item.dataset.unit);
+    });
+}
+
 async function getElectionsData(refresh = false) {
-    url = 'https://showcase.24sata.hr/izbori2024/parliamentary-elections-2024-latest.json';
+    url = 'https://showcase.24sata.hr/izbori2024/parliamentary-elections-2024-apis-strong.json';
 
     fetch(url).then((response) => {
         if (response.ok) {
@@ -226,16 +271,9 @@ async function getElectionsData(refresh = false) {
     })
     .then((responseJson) => {
         electionResults = responseJson;
-        console.log("🚀 ~ .then ~ electionResults:", electionResults)
 
         if (refresh) {
-            const menuItems = document.querySelectorAll('.menu_items li');
-
-            menuItems.forEach(item => {
-                if (item.textContent === selectedUnit.textContent) decideHowToProcess(item.dataset.unit);
-            });
-
-            setProcessedVotesAndLastChange(electionResults.status)
+            handleRefresh();
 
             return;
         }
@@ -243,24 +281,38 @@ async function getElectionsData(refresh = false) {
         dropdown = document.querySelector('.dropdown');
         loaderWrapper = document.querySelector('.loader_wrapper');
         targetUnit = document.querySelector('#target_unit');
-        selectedUnit = targetUnit;
+        selectedUnit = localStorageSelectedUnit || targetUnit.textContent;
 
-        setLiveOrNot(responseJson.live);
-        processData(responseJson);
+        setLiveOrNot(electionResults.live);
+        processData(electionResults);
 
-        if (responseJson.live) {
-            const interval = responseJson.interval || 60000;
+        if (electionResults.live) {
+            const interval = electionResults.interval || 60000;
             setInterval(autoRefresh, interval);
         }
     })
     .catch((error) => {
-        console.log(`Election results data were not retrieved due to: \n${error}`);
+        console.error(`[Elections widget] Election results data were not retrieved due to: \n${error}`);
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     // INFO: Can be 'examples/parliamentary-elections-2024.json' but run on some kind http server 
     getElectionsData();
+});
+
+window.addEventListener('message', event => {
+    if (trustDomains.indexOf(event.origin) >= 0) {
+        const eventData = event.data;
+        selectedUnit, targetUnit.textContent = eventData;
+        localStorageSelectedUnit = eventData;
+
+        if (loaderWrapper) loaderWrapper.style.display = 'block';
+
+        setSelectedUnitInMenu(eventData);
+        if (!electionResults) getElectionsData(true);
+        else handleRefresh();
+    }
 });
 
 function debounce (fn, delay) {
