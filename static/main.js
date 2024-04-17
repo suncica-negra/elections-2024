@@ -262,7 +262,7 @@ function handleRefresh() {
 }
 
 async function getElectionsData(refresh = false) {
-    url = 'https://showcase.24sata.hr/izbori2024/parliamentary-elections-2024-apis-strong.json';
+    url = 'https://showcase.24sata.hr/izbori2024/parliamentary-elections-2024-latest.json';
 
     fetch(url).then((response) => {
         if (response.ok) {
@@ -304,7 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('message', event => {
     if (trustDomains.indexOf(event.origin) >= 0) {
         const eventData = event.data;
-        selectedUnit, targetUnit.textContent = eventData;
+        selectedUnit = eventData;
+        if (targetUnit) targetUnit.textContent = eventData;
         localStorageSelectedUnit = eventData;
 
         if (loaderWrapper) loaderWrapper.style.display = 'block';
