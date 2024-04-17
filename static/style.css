@@ -88,6 +88,7 @@ textarea:not([rows]) {
     --tooltipPadding: 10px 5px 10px 20px;
     --textShadow: 0 0 0.7px #090909;
     --graphHover: rgba(0, 0, 0, 0.4);
+    --beforeHeight: 35px;
 }
 
 @keyframes rotation {
@@ -329,8 +330,8 @@ h1 .text span:nth-child(2) {
 }
 
 .party_result_wrapper:hover .tooltip_wrapper {
-    visibility: visible;
     animation: fadeInFromNone .4s ease-in-out;
+    display: block;
 }
 
 .party_result_wrapper:hover .party {
@@ -342,7 +343,7 @@ h1 .text span:nth-child(2) {
     filter: brightness(75%);
 }
 
-ol {
+ul {
     padding-left: 0;
     list-style-position: inside;
 }
@@ -365,7 +366,7 @@ ol {
 }
 
 .tooltip_wrapper {
-    visibility: hidden;
+    display: none;
     position: absolute;
     overflow-x: overlay;
     z-index: 1;
@@ -450,6 +451,10 @@ ol {
 .menu_items_holder li:hover {
     background-color: #D2DEF3;
     transition: var(--transition3s);
+}
+
+.menu_items_holder li.selected {
+    background-color: #D2DEF3;
 }
 
 .menu_items_holder {
@@ -542,7 +547,7 @@ ol {
         height: 176px;
     }
 
-    .tooltip ol {
+    .tooltip ul {
         height: 127px;
         overflow-x: overlay;
     }
@@ -610,6 +615,13 @@ ol {
         right: unset;
         top: -2px;
         left: 88%;
+        display: unset;
+        visibility: hidden;
+    }
+
+    .party_result_wrapper:hover .tooltip_wrapper {
+        display: unset;
+        visibility: visible;
     }
 
     .tooltip::after {
