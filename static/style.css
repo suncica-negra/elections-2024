@@ -477,6 +477,7 @@ ul {
     height: var(--hundredPercent);
     position: absolute;
     top: 0;
+    display: none;
 }
 
 .loader {
