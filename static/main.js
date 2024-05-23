@@ -262,7 +262,7 @@ function handleRefresh() {
 }
 
 async function getElectionsData(refresh = false) {
-    url = 'https://showcase.24sata.hr/izbori2024/parliamentary-elections-2024-latest.json';
+    url = 'https://showcase.24sata.hr/izbori2024/parliamentary-elections-2024-apis-strong.json';
 
     fetch(url).then((response) => {
         if (response.ok) {
